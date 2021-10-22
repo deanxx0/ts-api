@@ -15,8 +15,11 @@ import { Train, TrainDocument } from './train.schema';
 export class TrainService {
   constructor(
     @InjectModel(Train.name) private trainModel: Model<TrainDocument>,
+    @Inject(forwardRef(() => DirectoryService))
     private directoryService: DirectoryService,
+    @Inject(forwardRef(() => ConfigurationService))
     private configurationService: ConfigurationService,
+    @Inject(forwardRef(() => AugmentationService))
     private augmentationService: AugmentationService,
     @Inject(forwardRef(() => TrainServerService))
     private trainServerService: TrainServerService,

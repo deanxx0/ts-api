@@ -11,9 +11,9 @@ import { TrainService } from './train.service';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Train.name, schema: TrainSchema }]),
-    DirectoryModule,
-    ConfigurationModule,
-    AugmentationModule,
+    forwardRef(() => DirectoryModule),
+    forwardRef(() => ConfigurationModule),
+    forwardRef(() => AugmentationModule),
     forwardRef(() => TrainServerModule),
   ],
   controllers: [TrainController],
