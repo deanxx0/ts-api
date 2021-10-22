@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { TrainModule } from './train/train.module';
 import { DirectoryModule } from './directory/directory.module';
+import { ConfigurationModule } from './configuration/configuration.module';
+import { AugmentationModule } from './augmentation/augmentation.module';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { DirectoryModule } from './directory/directory.module';
     UserModule,
     TrainModule,
     DirectoryModule,
+    ConfigurationModule,
+    AugmentationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
