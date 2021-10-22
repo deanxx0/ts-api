@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { PostTrainDto } from './post-train.dto';
 import { TrainService } from './train.service';
@@ -13,10 +13,43 @@ export class TrainController {
   @Post()
   async createTrain(@Request() req, @Body() postTrainDto: PostTrainDto): Promise<any> {
     console.log(`[train controller] createTrain`);
-    const trainDoc = await this.trainService.createTrain(req.user.username, postTrainDto);
+    const resTrainInfoDto = await this.trainService.createTrain(req.user.username, postTrainDto);
     return {
-      success: trainDoc != null ? true : false,
-      result: trainDoc,
+      success: resTrainInfoDto != null ? true : false,
+      result: resTrainInfoDto,
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get(':_id')
+  async getTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
+    console.log(`[train controller] getTrainBy_id`);
+    const trainInfo = await this.trainService.getTrainInfoBy_id(req.user.username, _id);
+    return {
+      success: trainInfo != null ? true : false,
+      result: trainInfo,
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('pages/:pageNo')
+  async getTrainPage(@Param('pageNo') pageNo: number): Promise<any> {
+    console.log(`[train controller] getTrainPage`);
+    const trainPage = await this.trainService.getTrainPage(pageNo);
+    return {
+      success: trainPage != null ? true : false,
+      result: trainPage,
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':_id')
+  async deleteTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
+    console.log(`[train controller] deleteTrainBy_id`);
+    const deletedTrain = await this.trainService.deleteTrainInfoBy_id(req.user.username, _id);
+    return {
+      success: deletedTrain != null ? true : false,
+      result: deletedTrain,
     }
   }
 }

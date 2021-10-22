@@ -19,6 +19,11 @@ export class DirectoryService {
     return directoryDoc.save();
   }
 
+  async deleteDirectoryBy_id(_id: string): Promise<DirectoryDocument> {
+    console.log(`[directory service] deleteDirectoryBy_id`);
+    return this.directoryModel.findByIdAndDelete(_id).exec();
+  }
+
   buildCreateDirectoryDto(postTrainDto: PostTrainDto): CreateDirectoryDto {
     return {
       _id: (new ObjectID()).toHexString(),

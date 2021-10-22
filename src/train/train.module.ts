@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AugmentationModule } from 'src/augmentation/augmentation.module';
 import { ConfigurationModule } from 'src/configuration/configuration.module';
@@ -14,9 +14,10 @@ import { TrainService } from './train.service';
     DirectoryModule,
     ConfigurationModule,
     AugmentationModule,
-    TrainServerModule,
+    forwardRef(() => TrainServerModule),
   ],
   controllers: [TrainController],
   providers: [TrainService],
+  exports: [TrainService],
 })
 export class TrainModule {}

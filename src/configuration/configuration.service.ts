@@ -19,6 +19,11 @@ export class ConfigurationService {
     return configurationDoc.save();
   }
 
+  async deleteConfigurationBy_id(_id: string): Promise<ConfigurationDocument> {
+    console.log(`[configuration service] deleteConfigurationBy_id`);
+    return this.configurationModel.findByIdAndDelete(_id).exec();
+  }
+
   buildCreateConfigurationDto(postTrainDto: PostTrainDto): CreateConfigurationDto {
     return {
       _id: (new ObjectID()).toHexString(),

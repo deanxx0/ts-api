@@ -1,6 +1,7 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { forwardRef, HttpService, Inject, Injectable } from '@nestjs/common';
 import { ServerInfoService } from 'src/server-info/server-info.service';
 import { PostTrainDto } from 'src/train/post-train.dto';
+import { TrainService } from 'src/train/train.service';
 import { UserService } from 'src/user/user.service';
 import { ReqTrainDto } from './req-train.dto';
 
@@ -10,6 +11,8 @@ export class TrainServerService {
     private httpService: HttpService,
     private userService: UserService,
     private serverInfoService: ServerInfoService,
+    @Inject(forwardRef(() => TrainService))
+    private trainService: TrainService,
   ) {}
 
   async postTrain(username: string, postTrainDto: PostTrainDto): Promise<string> {
@@ -22,6 +25,36 @@ export class TrainServerService {
       reqTrainDto,
     ).toPromise();
     return resTrain.data.result.id; // serverTrainId
+  }
+
+  async getTrainStatus(username: string, _id: string): Promise<any> {
+    console.log(`[train server service] getTrainStatus`);
+    const userDoc = await this.userService.findOne(username);
+    const serverDoc = await this.serverInfoService.findByServerIndex(userDoc.serverIndex);
+    const trainDoc = await this.trainService.findTrainBy_id(_id);
+    const resTrain = await this.httpService.get(
+      `http://${serverDoc.uri}/trains/${trainDoc.serverTrainId}`
+    ).toPromise();
+    return resTrain.data.result.status;
+  }
+
+  async getTrainMetric(username: string, _id: string): Promise<any> {
+    console.log(`[train server service] getTrainMetric`);
+    const userDoc = await this.userService.findOne(username);
+    const serverDoc = await this.serverInfoService.findByServerIndex(userDoc.serverIndex);
+    const trainDoc = await this.trainService.findTrainBy_id(_id);
+    const resTrainMetric = await this.httpService.get(
+      `http://${serverDoc.uri}/trains/${trainDoc.serverTrainId}/metrics/pages/0`
+    ).toPromise();
+    const metrics: any[] = resTrainMetric.data.result;
+    return {
+      train_loss: metrics[metrics.length-1].train_loss,
+      test_loss: metrics[metrics.length-1].test_loss,
+      test_accuracy: metrics[metrics.length-1].test_accuracy,
+      iou: metrics[metrics.length-1].test_accuracy2,
+      iteration: metrics[metrics.length-1].current_iteration,
+      max_iteration: metrics[metrics.length-1].max_iteration,
+    }
   }
 
   buildReqTrainDto(postTrainDto: PostTrainDto): ReqTrainDto {
