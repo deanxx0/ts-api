@@ -11,6 +11,7 @@ import { AugmentationModule } from './augmentation/augmentation.module';
 import { TrainServerModule } from './train-server/train-server.module';
 import { ServerInfoModule } from './server-info/server-info.module';
 import { ConfigModule } from '@nestjs/config';
+import { LocalModule } from './local/local.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ConfigModule } from '@nestjs/config';
     AugmentationModule,
     TrainServerModule,
     ServerInfoModule,
+    LocalModule,
   ],
   controllers: [AppController],
   providers: [AppService],
