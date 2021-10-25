@@ -1,9 +1,6 @@
 export class ReqTrainDto {
   target_type: string;
-  image_list_path: string;
-  label_list_path: string;
-  val_image_list_path: string;
-  val_label_list_path: string;
+  directories: string[];
   train_params: {
     gpu_id: number;
     iterations: number;

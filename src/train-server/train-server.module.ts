@@ -3,6 +3,7 @@ import { ServerInfoModule } from 'src/server-info/server-info.module';
 import { TrainModule } from 'src/train/train.module';
 import { UserModule } from 'src/user/user.module';
 import { TrainServerService } from './train-server.service';
+import { TrainServerController } from './train-server.controller';
 
 @Module({
   imports: [
@@ -13,5 +14,6 @@ import { TrainServerService } from './train-server.service';
   ],
   providers: [TrainServerService],
   exports: [TrainServerService],
+  controllers: [TrainServerController],
 })
 export class TrainServerModule {}

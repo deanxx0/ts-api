@@ -60,10 +60,7 @@ export class TrainServerService {
   buildReqTrainDto(postTrainDto: PostTrainDto): ReqTrainDto {
     return {
       target_type: 'venus',
-      image_list_path: 'Y:/det_01/img.txt',
-      label_list_path: 'Y:/det_01/label.txt',
-      val_image_list_path: 'Y:/det_01/img_val.txt',
-      val_label_list_path: 'Y:/det_01/label_val.txt',
+      directories: postTrainDto.directories,
       train_params: {
         gpu_id: 0,
         iterations: postTrainDto.maxIteration,
