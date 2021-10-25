@@ -44,12 +44,13 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Get('pages/:pageNo')
-  async getTrainPage(@Param('pageNo') pageNo: number,): Promise<any> {
+  async getTrainPage(@Request() req, @Param('pageNo') pageNo: number,): Promise<any> {
     console.log(`[train controller] getTrainPage`);
-    const trainPage = await this.trainService.getTrainPage(pageNo);
+    const trainPage = await this.trainService.getTrainPage(req.user.username, pageNo);
     return {
       success: trainPage != null ? true : false,
-      result: trainPage.map(idObj => idObj._id),
+      result: trainPage,
+      // result: trainPage.map(idObj => idObj._id),
     }
   }
 

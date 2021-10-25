@@ -64,16 +64,24 @@ export class TrainService {
     return this.trainModel.findById(_id).exec();
   }
 
-  async getTrainPage(pageNo: number): Promise<any[]> {
-    console.log(`[train service] getTrainPages by limit`);
+  async getTrainPage(username: string, pageNo: number): Promise<any[]> {
+    console.log(`[train service] getTrainPages`);
     const perPage = 5;
-    return this.trainModel
-      .find({})
-      .sort({ createdAt: -1 })
-      .limit(perPage)
-      .skip(perPage * (pageNo-1))
-      .select({ _id: 1})
-      .exec();
+    // return this.trainModel
+    //   .find({})
+    //   .sort({ createdAt: -1 })
+    //   .limit(perPage)
+    //   .skip(perPage * (pageNo-1))
+    //   .select({ _id: 1})
+    //   .exec();
+    const trainDocList = await this.trainModel.find({}).sort({ createdAt: -1 }).limit(perPage).skip(perPage * (pageNo-1)).exec();
+    const trainResList = await Promise.all(
+      trainDocList.map(trainDoc => {
+        console.log(`TEST trainDoc._id: ${trainDoc._id}`);
+        return this.getTrainInfoBy_id(username, trainDoc._id);
+      })
+    );
+    return trainResList;
   }
 
   async deleteTrainInfoBy_id(username: string, _id: string) {
