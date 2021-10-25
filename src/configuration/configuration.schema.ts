@@ -5,9 +5,9 @@ export class Configuration {
   @Prop()
   _id: string;
   @Prop()
-  batch_size: number;
+  batchSize: number;
   @Prop()
-  pretrain_data: string;
+  pretrainData: string;
   @Prop()
   width: number;
   @Prop()
@@ -20,6 +20,8 @@ export class Configuration {
   gamma: number;
   @Prop()
   stepCount: number;
+  @Prop()
+  maxIteration: number;
 }
 
 export type ConfigurationDocument = Configuration & Document;

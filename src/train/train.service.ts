@@ -9,6 +9,7 @@ import { TrainServerService } from 'src/train-server/train-server.service';
 import { CreateTrainDto } from './create-train.dto';
 import { PostTrainDto } from './post-train.dto';
 import { ResTrainInfoDto } from './res-train-info.dto';
+import { ResTrainSettingDto } from './res-train-setting.dto';
 import { Train, TrainDocument } from './train.schema';
 
 @Injectable()
@@ -90,6 +91,15 @@ export class TrainService {
     return Math.ceil(totalDocCount / perPage);
   }
 
+  async getTrainSetting(train_id: string): Promise<any> {
+    console.log(`[train service] getTrainSetting`);
+    const train = await this.findTrainBy_id(train_id);
+    const configuration = await this.configurationService.findOneById(train.configurationId);
+    const augmentataion = await this.augmentationService.findOneById(train.augmentationId);
+    const resTrainSetting = this.buildResTrainSettingDto(configuration, augmentataion);
+    return resTrainSetting;
+  }
+
   async deleteTrainInfoBy_id(username: string, _id: string) {
     console.log(`[train service] deleteTrainInfoBy_id`);
     const trainStatus = await this.trainServerService.getTrainStatus(username, _id);
@@ -116,6 +126,39 @@ export class TrainService {
   async deleteTrainBy_id(_id: string): Promise<TrainDocument> {
     console.log(`[train service] deleteTrainBy_id`);
     return this.trainModel.findByIdAndDelete(_id).exec();
+  }
+
+  buildResTrainSettingDto(configuration, augmentation): ResTrainSettingDto {
+    return {
+      batchSize: configuration.batchSize,
+      pretrainData: configuration.pretrainData,
+      width: configuration.width,
+      height: configuration.height,
+      channels: configuration.channels,
+      baseLearningRate: configuration.baseLearningRate,
+      gamma: configuration.gamma,
+      stepCount: configuration.stepCount,
+      maxIteration: configuration.maxIteration,
+      mirror: augmentation.mirror,
+      flip: augmentation.flip,
+      rotation90: augmentation.rotation90,
+      zoom: augmentation.zoom,
+      tilt: augmentation.tilt,
+      shift: augmentation.shift,
+      rotation: augmentation.rotation,
+      contrast: augmentation.contrast,
+      brightness: augmentation.brightness,
+      smoothFiltering: augmentation.smoothFiltering,
+      noise: augmentation.noise,
+      colorNoise: augmentation.colorNoise,
+      partialFocus: augmentation.partialFocus,
+      shade: augmentation.shade,
+      hue: augmentation.hue,
+      saturation: augmentation.saturation,
+      maxRandomAugmentCount: augmentation.maxRandomAugmentCount,
+      probability: augmentation.probability,
+      borderMode: augmentation.borderMode,
+    }
   }
 
   buildCreateTrainDto(
