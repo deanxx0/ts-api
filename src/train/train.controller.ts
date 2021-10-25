@@ -32,6 +32,17 @@ export class TrainController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('totalpage')
+  async getTotalPage(): Promise<any> {
+    console.log(`[train controller] getTotalPage`);
+    const totalPage = await this.trainService.getTotalPage();
+    return {
+      success: totalPage != null ? true : false,
+      result: totalPage,
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':_id')
   async getTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
     console.log(`[train controller] getTrainBy_id`);

@@ -67,6 +67,13 @@ export class TrainService {
   async getTrainPage(username: string, pageNo: number): Promise<any[]> {
     console.log(`[train service] getTrainPages`);
     const perPage = 5;
+    const trainDocList = await this.trainModel.find({}).sort({ createdAt: -1 }).limit(perPage).skip(perPage * (pageNo-1)).exec();
+    const trainResList = await Promise.all(
+      trainDocList.map(trainDoc => {
+        return this.getTrainInfoBy_id(username, trainDoc._id);
+      })
+    );
+    return trainResList;
     // return this.trainModel
     //   .find({})
     //   .sort({ createdAt: -1 })
@@ -74,14 +81,13 @@ export class TrainService {
     //   .skip(perPage * (pageNo-1))
     //   .select({ _id: 1})
     //   .exec();
-    const trainDocList = await this.trainModel.find({}).sort({ createdAt: -1 }).limit(perPage).skip(perPage * (pageNo-1)).exec();
-    const trainResList = await Promise.all(
-      trainDocList.map(trainDoc => {
-        console.log(`TEST trainDoc._id: ${trainDoc._id}`);
-        return this.getTrainInfoBy_id(username, trainDoc._id);
-      })
-    );
-    return trainResList;
+  }
+
+  async getTotalPage(): Promise<any> {
+    console.log(`[train service] getTotalPage`);
+    const perPage = 5;
+    const totalDocCount = await this.trainModel.countDocuments();
+    return Math.ceil(totalDocCount / perPage);
   }
 
   async deleteTrainInfoBy_id(username: string, _id: string) {
