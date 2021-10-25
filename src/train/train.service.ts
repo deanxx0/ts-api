@@ -46,9 +46,16 @@ export class TrainService {
     return trainDoc.save();
   }
 
-  async findAllTrain(): Promise<any> {
+  async findAllTrain(username: string): Promise<any> {
     console.log(`[train service] findAllTrain`);
-    return this.trainModel.find({}).select({ _id: 1}).exec();
+    // return this.trainModel.find({}).select({ _id: 1}).exec();
+    const trainDocList = await this.trainModel.find({}).exec();
+    const trainResList = await Promise.all(
+      trainDocList.map(trainDoc => {
+        return this.getTrainInfoBy_id(username, trainDoc._id);
+      })
+    )
+    return trainResList;
   }
 
   async getTrainInfoBy_id(username: string, _id: string): Promise<any> {

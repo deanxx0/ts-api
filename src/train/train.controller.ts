@@ -22,12 +22,13 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllTrain(): Promise<any> {
+  async getAllTrain(@Request() req): Promise<any> {
     console.log(`[train controller] getAllTrain`);
-    const allTrain = await this.trainService.findAllTrain();
+    const allTrain = await this.trainService.findAllTrain(req.user.username);
     return {
       success: allTrain != null ? true : false,
-      result: allTrain.map(idObj => idObj._id),
+      result: allTrain,
+      // result: allTrain.map(idObj => idObj._id),
     }
   }
 
