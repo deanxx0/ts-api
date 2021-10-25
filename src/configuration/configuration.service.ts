@@ -42,15 +42,15 @@ export class ConfigurationService {
   buildCreateConfigurationDto(postTrainDto: PostTrainDto): CreateConfigurationDto {
     return {
       _id: (new ObjectID()).toHexString(),
-      batchSize: postTrainDto.configuration.batchSize,
-      pretrainData: postTrainDto.configuration.pretrainData,
-      width: postTrainDto.configuration.width,
-      height: postTrainDto.configuration.height,
-      channels: postTrainDto.configuration.channels,
-      baseLearningRate: postTrainDto.configuration.baseLearningRate,
-      gamma: postTrainDto.configuration.gamma,
-      stepCount: postTrainDto.configuration.stepCount,
-      maxIteration: postTrainDto.configuration.maxIteration,
+      batchSize: postTrainDto.batchSize,
+      pretrainData: postTrainDto.pretrainData,
+      width: postTrainDto.width,
+      height: postTrainDto.height,
+      channels: postTrainDto.channels,
+      baseLearningRate: postTrainDto.baseLearningRate,
+      gamma: postTrainDto.gamma,
+      stepCount: postTrainDto.stepCount,
+      maxIteration: postTrainDto.maxIteration,
     }
   }
 }
