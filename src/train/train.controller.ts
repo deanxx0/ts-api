@@ -21,6 +21,17 @@ export class TrainController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get()
+  async getAllTrain(): Promise<any> {
+    console.log(`[train controller] getAllTrain`);
+    const allTrain = await this.trainService.findAllTrain();
+    return {
+      success: allTrain != null ? true : false,
+      result: allTrain.map(idObj => idObj._id),
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':_id')
   async getTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
     console.log(`[train controller] getTrainBy_id`);
@@ -33,12 +44,12 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Get('pages/:pageNo')
-  async getTrainPage(@Param('pageNo') pageNo: number): Promise<any> {
+  async getTrainPage(@Param('pageNo') pageNo: number,): Promise<any> {
     console.log(`[train controller] getTrainPage`);
     const trainPage = await this.trainService.getTrainPage(pageNo);
     return {
       success: trainPage != null ? true : false,
-      result: trainPage,
+      result: trainPage.map(idObj => idObj._id),
     }
   }
 

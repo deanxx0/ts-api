@@ -45,6 +45,11 @@ export class TrainService {
     return trainDoc.save();
   }
 
+  async findAllTrain(): Promise<any> {
+    console.log(`[train service] findAllTrain`);
+    return this.trainModel.find({}).select({ _id: 1}).exec();
+  }
+
   async getTrainInfoBy_id(username: string, _id: string): Promise<any> {
     console.log(`[train service] getTrainInfoBy_id`);
     const trainDoc = await this.findTrainBy_id(_id);
@@ -60,8 +65,8 @@ export class TrainService {
   }
 
   async getTrainPage(pageNo: number): Promise<any[]> {
-    console.log(`[train service] getTrainPages`);
-    const perPage = 15;
+    console.log(`[train service] getTrainPages by limit`);
+    const perPage = 5;
     return this.trainModel
       .find({})
       .sort({ createdAt: -1 })
