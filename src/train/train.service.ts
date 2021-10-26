@@ -103,7 +103,7 @@ export class TrainService {
     const train = await this.findTrainBy_id(train_id);
     const configuration = await this.configurationService.findOneById(train.configurationId);
     const augmentataion = await this.augmentationService.findOneById(train.augmentationId);
-    const resTrainSetting = this.buildResTrainSettingDto(configuration, augmentataion);
+    const resTrainSetting = this.buildResTrainSettingDto(train, configuration, augmentataion);
     return resTrainSetting;
   }
 
@@ -135,8 +135,9 @@ export class TrainService {
     return this.trainModel.findByIdAndDelete(_id).exec();
   }
 
-  buildResTrainSettingDto(configuration, augmentation): ResTrainSettingDto {
+  buildResTrainSettingDto(train, configuration, augmentation): ResTrainSettingDto {
     return {
+      name: train.name,
       batchSize: configuration.batchSize,
       pretrainData: configuration.pretrainData,
       width: configuration.width,

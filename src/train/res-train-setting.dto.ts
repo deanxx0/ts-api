@@ -1,4 +1,5 @@
 export class ResTrainSettingDto {
+  name: string;
   batchSize: number;
   pretrainData: string;
   width: number;
