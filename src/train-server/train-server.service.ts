@@ -47,13 +47,24 @@ export class TrainServerService {
       `http://${serverDoc.uri}/trains/${trainDoc.serverTrainId}/metrics/pages/0`
     ).toPromise();
     const metrics: any[] = resTrainMetric.data.result;
-    return {
-      train_loss: metrics[metrics.length-1].train_loss,
-      test_loss: metrics[metrics.length-1].test_loss,
-      test_accuracy: metrics[metrics.length-1].test_accuracy,
-      iou: metrics[metrics.length-1].test_accuracy2,
-      iteration: metrics[metrics.length-1].current_iteration,
-      max_iteration: metrics[metrics.length-1].max_iteration,
+    if (metrics.length == 0) {
+      return {
+        train_loss: 0,
+        test_loss: 0,
+        test_accuracy: 0,
+        iou: 0,
+        iteration: 0,
+        max_iteration: 0,
+      }
+    } else {
+      return {
+        train_loss: metrics[metrics.length-1].train_loss,
+        test_loss: metrics[metrics.length-1].test_loss,
+        test_accuracy: metrics[metrics.length-1].test_accuracy,
+        iou: metrics[metrics.length-1].test_accuracy2,
+        iteration: metrics[metrics.length-1].current_iteration,
+        max_iteration: metrics[metrics.length-1].max_iteration,
+      }
     }
   }
 
