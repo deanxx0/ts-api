@@ -1,5 +1,6 @@
 export class ResTrainInfoDto {
   id: string;
+  serverTrainId: string;
   name: string;
   status: string;
   progress: number;

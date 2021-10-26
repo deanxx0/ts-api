@@ -72,10 +72,10 @@ export class TrainService {
     return this.trainModel.findById(_id).exec();
   }
 
-  async getTrainPage(username: string, pageNo: number): Promise<any[]> {
+  async getTrainPage(username: string, pageNo: number, perPage: string): Promise<any[]> {
     console.log(`[train service] getTrainPages`);
-    const perPage = 5;
-    const trainDocList = await this.trainModel.find({}).sort({ createdAt: -1 }).limit(perPage).skip(perPage * (pageNo-1)).exec();
+    const intPerPage = parseInt(perPage)
+    const trainDocList = await this.trainModel.find({}).sort({ createdAt: -1 }).limit(intPerPage).skip(intPerPage * (pageNo-1)).exec();
     const trainResList = await Promise.all(
       trainDocList.map(trainDoc => {
         return this.getTrainInfoBy_id(username, trainDoc._id);
@@ -96,6 +96,12 @@ export class TrainService {
     const perPage = 5;
     const totalDocCount = await this.trainModel.countDocuments();
     return Math.ceil(totalDocCount / perPage);
+  }
+
+  async getTotalCount(): Promise<any> {
+    console.log(`[train service] getTotalCount`);
+    const totalDocCount = await this.trainModel.countDocuments();
+    return totalDocCount;
   }
 
   async getTrainSetting(train_id: string): Promise<any> {
@@ -193,6 +199,7 @@ export class TrainService {
   ): ResTrainInfoDto {
     return {
       id: trainDoc._id,
+      serverTrainId: trainDoc.serverTrainId,
       name: trainDoc.name,
       status: trainStatus,
       progress: trainMetric.iteration / trainMetric.max_iteration,

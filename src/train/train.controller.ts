@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { PostTrainDto } from './post-train.dto';
 import { TrainService } from './train.service';
@@ -44,6 +44,17 @@ export class TrainController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('totalcount')
+  async getTotalCount(): Promise<any> {
+    console.log(`[Req][train controller] getTotalCount`);
+    const totalCount = await this.trainService.getTotalCount();
+    return {
+      success: totalCount != null ? true : false,
+      result: totalCount,
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('setting/:_id')
   async getTrainSetting(@Param('_id') _id: string): Promise<any> {
     console.log(`[Req][train controller] getTrainSetting`);
@@ -56,9 +67,9 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Get('pages/:pageNo')
-  async getTrainPage(@Request() req, @Param('pageNo') pageNo: number,): Promise<any> {
+  async getTrainPage(@Request() req, @Param('pageNo') pageNo: number, @Query('perPage') perPage: string = '5'): Promise<any> {
     console.log(`[Req][train controller] getTrainPage`);
-    const trainPage = await this.trainService.getTrainPage(req.user.username, pageNo);
+    const trainPage = await this.trainService.getTrainPage(req.user.username, pageNo, perPage);
     return {
       success: trainPage != null ? true : false,
       result: trainPage,
