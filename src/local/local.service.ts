@@ -10,4 +10,10 @@ export class LocalService {
     const datasetList: string[] = fs.readdirSync(process.env.DATASETS_DIR);
     return datasetList;
   }
+
+  async getPretrain(): Promise<any> {
+    console.log(`[local service] getPretrain`);
+    const pretrainList: string[] = fs.readdirSync(process.env.PRETRAINED_DIR);
+    return pretrainList;
+  }
 }

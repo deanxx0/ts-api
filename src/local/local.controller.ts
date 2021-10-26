@@ -16,4 +16,15 @@ export class LocalController {
       result: datasetList,
     }
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('pretrain')
+  async getPretrain(): Promise<any> {
+    console.log(`[Req][local controller] getPretrain`);
+    const pretrainList = await this.localService.getPretrain();
+    return {
+      success: pretrainList != null ? true : false,
+      result: pretrainList,
+    }
+  }
 }
