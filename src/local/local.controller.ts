@@ -9,7 +9,7 @@ export class LocalController {
   @UseGuards(JwtAuthGuard)
   @Get('dataset')
   async getDataset(): Promise<any> {
-    console.log(`[local controller] getDataset`);
+    console.log(`[Req][local controller] getDataset`);
     const dataset = this.localService.getDataset();
     return {
       success: dataset != null ? true : false,

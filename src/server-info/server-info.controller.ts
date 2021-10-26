@@ -8,7 +8,7 @@ export class ServerInfoController {
 
   @Post()
   async createServerInfo(@Body() postServerInfoDto: PostServerInfoDto): Promise<any> {
-    console.log(`[server info controller] createServerInfo`);
+    console.log(`[Req][server info controller] createServerInfo`);
     const serverInfoDoc = await this.serverInfoService.createServerInfo(postServerInfoDto);
     return {
       success: serverInfoDoc != null ? true : false,

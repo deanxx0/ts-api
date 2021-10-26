@@ -13,14 +13,14 @@ export class UserController {
 
   @Post()
   async createUser(@Body() userDto: UserDto): Promise<UserDocument> {
-    console.log(`[user controller] createUser`);
+    console.log(`[Req][user controller] createUser`);
     return this.userService.create(userDto);
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req, @Res({ passthrough: true }) res: Response): Promise<any> {
-    console.log(`[user controller] login`);
+    console.log(`[Req][user controller] login`);
     const tokenObj = await this.authService.login(req.user);
     res.set('access_token', tokenObj.access_token);
     return {
@@ -34,7 +34,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async findUser(@Request() req) {
-    console.log(`[user controller] findUser`);
+    console.log(`[Req][user controller] findUser`);
     return this.userService.findOne(req.user.username);
   }
 }

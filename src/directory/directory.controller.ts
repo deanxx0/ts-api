@@ -10,7 +10,7 @@ export class DirectoryController {
   @UseGuards(JwtAuthGuard)
   @Get(':train_id')
   async getDirectoryByTrain_id(@Param('train_id') train_id: string): Promise<any> {
-    console.log(`[directory controller] getDirectoryByTrain_id`);
+    console.log(`[Req][directory controller] getDirectoryByTrain_id`);
     const directory = await this.directoryService.getDirectoryByTrain_id(train_id);
     return {
       success: directory != null ? true : false,

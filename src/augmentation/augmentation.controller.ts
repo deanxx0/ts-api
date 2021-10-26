@@ -9,7 +9,7 @@ export class AugmentationController {
   @UseGuards(JwtAuthGuard)
   @Get(':train_id')
   async getAugmentationByTrain_id(@Param('train_id') train_id: string): Promise<any> {
-    console.log(`[augmentation controller] getAugmentationByTrain_id`);
+    console.log(`[Req][augmentation controller] getAugmentationByTrain_id`);
     const augmentation = await this.augmentationService.getAugmentationByTrain_id(train_id);
     return {
       success: augmentation != null ? true : false,

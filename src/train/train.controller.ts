@@ -12,7 +12,7 @@ export class TrainController {
   @UseGuards(JwtAuthGuard)
   @Post()
   async createTrain(@Request() req, @Body() postTrainDto: PostTrainDto): Promise<any> {
-    console.log(`[train controller] createTrain`);
+    console.log(`[Req][train controller] createTrain`);
     const resTrainInfoDto = await this.trainService.createTrain(req.user.username, postTrainDto);
     return {
       success: resTrainInfoDto != null ? true : false,
@@ -23,7 +23,7 @@ export class TrainController {
   @UseGuards(JwtAuthGuard)
   @Get()
   async getAllTrain(@Request() req): Promise<any> {
-    console.log(`[train controller] getAllTrain`);
+    console.log(`[Req][train controller] getAllTrain`);
     const allTrain = await this.trainService.findAllTrain(req.user.username);
     return {
       success: allTrain != null ? true : false,
@@ -35,7 +35,7 @@ export class TrainController {
   @UseGuards(JwtAuthGuard)
   @Get('totalpage')
   async getTotalPage(): Promise<any> {
-    console.log(`[train controller] getTotalPage`);
+    console.log(`[Req][train controller] getTotalPage`);
     const totalPage = await this.trainService.getTotalPage();
     return {
       success: totalPage != null ? true : false,
@@ -46,7 +46,7 @@ export class TrainController {
   @UseGuards(JwtAuthGuard)
   @Get('setting/:_id')
   async getTrainSetting(@Param('_id') _id: string): Promise<any> {
-    console.log(`[train controller] getTrainSetting`);
+    console.log(`[Req][train controller] getTrainSetting`);
     const trainSetting = await this.trainService.getTrainSetting(_id);
     return {
       success: trainSetting != null ? true : false,
@@ -57,7 +57,7 @@ export class TrainController {
   @UseGuards(JwtAuthGuard)
   @Get('pages/:pageNo')
   async getTrainPage(@Request() req, @Param('pageNo') pageNo: number,): Promise<any> {
-    console.log(`[train controller] getTrainPage`);
+    console.log(`[Req][train controller] getTrainPage`);
     const trainPage = await this.trainService.getTrainPage(req.user.username, pageNo);
     return {
       success: trainPage != null ? true : false,
@@ -69,7 +69,7 @@ export class TrainController {
   @UseGuards(JwtAuthGuard)
   @Get(':_id')
   async getTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
-    console.log(`[train controller] getTrainBy_id`);
+    console.log(`[Req][train controller] getTrainBy_id`);
     const trainInfo = await this.trainService.getTrainInfoBy_id(req.user.username, _id);
     return {
       success: trainInfo != null ? true : false,
@@ -80,7 +80,7 @@ export class TrainController {
   @UseGuards(JwtAuthGuard)
   @Delete(':_id')
   async deleteTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
-    console.log(`[train controller] deleteTrainBy_id`);
+    console.log(`[Req][train controller] deleteTrainBy_id`);
     const deletedTrain = await this.trainService.deleteTrainInfoBy_id(req.user.username, _id);
     return {
       success: deletedTrain != null ? true : false,

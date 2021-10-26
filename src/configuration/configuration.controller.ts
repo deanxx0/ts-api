@@ -11,7 +11,7 @@ export class ConfigurationController {
   @UseGuards(JwtAuthGuard)
   @Get(':train_id')
   async getConfigurationByTrain_id(@Param('train_id') train_id: string): Promise<any> {
-    console.log(`[configuration controller] getConfigurationByTrain_id`);
+    console.log(`[Req][configuration controller] getConfigurationByTrain_id`);
     const configuration = await this.configurationService.getConfigurationByTrain_id(train_id);
     return {
       success: configuration != null ? true : false,
