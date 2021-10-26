@@ -32,6 +32,15 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('confirm')
+  async confirm(): Promise<any> {
+    console.log(`[Req][user controller] confirm`);
+    return {
+      success: true,
+    }
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get()
   async findUser(@Request() req) {
     console.log(`[Req][user controller] findUser`);
