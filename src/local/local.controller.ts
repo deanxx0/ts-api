@@ -10,10 +10,10 @@ export class LocalController {
   @Get('dataset')
   async getDataset(): Promise<any> {
     console.log(`[Req][local controller] getDataset`);
-    const dataset = this.localService.getDataset();
+    const datasetList = await this.localService.getDataset();
     return {
-      success: dataset != null ? true : false,
-      result: dataset,
+      success: datasetList != null ? true : false,
+      result: datasetList,
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import fs from 'fs';
+import * as fs from 'fs';
 
 @Injectable()
 export class LocalService {
@@ -7,11 +7,7 @@ export class LocalService {
 
   async getDataset(): Promise<any> {
     console.log(`[local service] getDataset`);
-    fs.readdir('../',{withFileTypes: true} ,(err, files) => {
-      files.forEach(file => {
-        console.log(file.name);
-      })
-    });
-    
+    const datasetList: string[] = fs.readdirSync(process.env.DATASETS_DIR);
+    return datasetList;
   }
 }
