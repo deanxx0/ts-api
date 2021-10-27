@@ -11,9 +11,9 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  async createTrain(@Request() req, @Body() postTrainDto: PostTrainDto): Promise<any> {
+  async createTrain(@Body() postTrainDto: PostTrainDto): Promise<any> {
     console.log(`[Req][train controller] createTrain`);
-    const resTrainInfoDto = await this.trainService.createTrain(req.user.username, postTrainDto);
+    const resTrainInfoDto = await this.trainService.createTrain(postTrainDto);
     return {
       success: resTrainInfoDto != null ? true : false,
       result: resTrainInfoDto,

@@ -27,20 +27,19 @@ export class TrainService {
   ) {}
 
   async createTrain(
-    username: string,
     postTrainDto: PostTrainDto,
   ): Promise<any> {
     console.log(`[train service] createTrain`);
     const directoryDoc = await this.directoryService.createDirectory(postTrainDto);
     const configurationDoc = await this.configurationService.createConfiguration(postTrainDto);
     const augmentationDoc = await this.augmentationService.createAugmentation(postTrainDto);
-    const serverTrainId = await this.trainServerService.postTrain(username, postTrainDto);
+    const serverTrainId = await this.trainServerService.postTrain(postTrainDto);
     const CreateTrainDto = this.buildCreateTrainDto(
       directoryDoc._id,
       configurationDoc._id,
       augmentationDoc._id,
       serverTrainId,
-      postTrainDto.name,
+      postTrainDto,
     );
     const trainDoc = new this.trainModel(CreateTrainDto);
     return trainDoc.save();
@@ -180,11 +179,12 @@ export class TrainService {
     configuration_id: string,
     augmentation_id: string,
     serverTrainId: string,
-    postTrainDtoName: string,
+    postTrainDto: PostTrainDto,
   ): CreateTrainDto {
     return {
       _id: (new ObjectID()).toHexString(),
-      name: postTrainDtoName,
+      serverIndex: postTrainDto.serverIndex,
+      name: postTrainDto.name,
       serverTrainId: serverTrainId,
       directoryId: directory_id,
       configurationId: configuration_id,
@@ -199,6 +199,7 @@ export class TrainService {
   ): ResTrainInfoDto {
     return {
       id: trainDoc._id,
+      serverIndex: trainDoc.serverIndex,
       serverTrainId: trainDoc.serverTrainId,
       name: trainDoc.name,
       status: trainStatus,

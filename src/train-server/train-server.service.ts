@@ -15,10 +15,9 @@ export class TrainServerService {
     private trainService: TrainService,
   ) {}
 
-  async postTrain(username: string, postTrainDto: PostTrainDto): Promise<string> {
+  async postTrain(postTrainDto: PostTrainDto): Promise<string> {
     console.log(`[train server service] postTrain`);
-    const userDoc = await this.userService.findOne(username);
-    const serverDoc = await this.serverInfoService.findByServerIndex(userDoc.serverIndex);
+    const serverDoc = await this.serverInfoService.findByServerIndex(postTrainDto.serverIndex);
     const reqTrainDto = this.buildReqTrainDto(postTrainDto);
     const resTrain = await this.httpService.post(
       `http://${serverDoc.uri}/trains`,

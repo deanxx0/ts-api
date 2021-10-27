@@ -1,5 +1,6 @@
 export class ResTrainInfoDto {
   id: string;
+  serverIndex: number;
   serverTrainId: string;
   name: string;
   status: string;

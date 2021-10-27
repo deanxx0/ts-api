@@ -1,4 +1,5 @@
 export class PostTrainDto {
+  serverIndex: number;
   name: string;
   directories: string[];
   batchSize: number;
