@@ -22,9 +22,9 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getAllTrain(@Request() req): Promise<any> {
+  async getAllTrain(): Promise<any> {
     console.log(`[Req][train controller] getAllTrain`);
-    const allTrain = await this.trainService.findAllTrain(req.user.username);
+    const allTrain = await this.trainService.findAllTrain();
     return {
       success: allTrain != null ? true : false,
       result: allTrain,
@@ -67,9 +67,9 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Get('pages/:pageNo')
-  async getTrainPage(@Request() req, @Param('pageNo') pageNo: number, @Query('perPage') perPage: string = '5'): Promise<any> {
+  async getTrainPage(@Param('pageNo') pageNo: number, @Query('perPage') perPage: string = '5'): Promise<any> {
     console.log(`[Req][train controller] getTrainPage`);
-    const trainPage = await this.trainService.getTrainPage(req.user.username, pageNo, perPage);
+    const trainPage = await this.trainService.getTrainPage(pageNo, perPage);
     return {
       success: trainPage != null ? true : false,
       result: trainPage,
@@ -79,9 +79,9 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':_id')
-  async getTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
+  async getTrainInfoBy_id(@Param('_id') _id: string): Promise<any> {
     console.log(`[Req][train controller] getTrainBy_id`);
-    const trainInfo = await this.trainService.getTrainInfoBy_id(req.user.username, _id);
+    const trainInfo = await this.trainService.getTrainInfoBy_id(_id);
     return {
       success: trainInfo != null ? true : false,
       result: trainInfo,
@@ -90,9 +90,9 @@ export class TrainController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':_id')
-  async deleteTrainInfoBy_id(@Request() req, @Param('_id') _id: string): Promise<any> {
+  async deleteTrainInfoBy_id(@Param('_id') _id: string): Promise<any> {
     console.log(`[Req][train controller] deleteTrainBy_id`);
-    const deletedTrain = await this.trainService.deleteTrainInfoBy_id(req.user.username, _id);
+    const deletedTrain = await this.trainService.deleteTrainInfoBy_id(_id);
     return {
       success: deletedTrain != null ? true : false,
       result: deletedTrain,

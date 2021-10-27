@@ -5,6 +5,8 @@ export class Train {
   @Prop()
   _id: string;
   @Prop()
+  serverIndex: number;
+  @Prop()
   name: string;
   @Prop()
   serverTrainId: string;

@@ -45,23 +45,23 @@ export class TrainService {
     return trainDoc.save();
   }
 
-  async findAllTrain(username: string): Promise<any> {
+  async findAllTrain(): Promise<any> {
     console.log(`[train service] findAllTrain`);
     // return this.trainModel.find({}).select({ _id: 1}).exec();
     const trainDocList = await this.trainModel.find({}).exec();
     const trainResList = await Promise.all(
       trainDocList.map(trainDoc => {
-        return this.getTrainInfoBy_id(username, trainDoc._id);
+        return this.getTrainInfoBy_id(trainDoc._id);
       })
     )
     return trainResList;
   }
 
-  async getTrainInfoBy_id(username: string, _id: string): Promise<any> {
+  async getTrainInfoBy_id(_id: string): Promise<any> {
     console.log(`[train service] getTrainInfoBy_id`);
     const trainDoc = await this.findTrainBy_id(_id);
-    const trainStatus = await this.trainServerService.getTrainStatus(username, _id);
-    const trainMetric = await this.trainServerService.getTrainMetric(username, _id);
+    const trainStatus = await this.trainServerService.getTrainStatus(_id);
+    const trainMetric = await this.trainServerService.getTrainMetric(_id);
     const resTrainInfoDto = this.buildResTrainInfoDto(trainDoc, trainStatus, trainMetric);
     return resTrainInfoDto;
   }
@@ -71,13 +71,13 @@ export class TrainService {
     return this.trainModel.findById(_id).exec();
   }
 
-  async getTrainPage(username: string, pageNo: number, perPage: string): Promise<any[]> {
+  async getTrainPage(pageNo: number, perPage: string): Promise<any[]> {
     console.log(`[train service] getTrainPages`);
     const intPerPage = parseInt(perPage)
     const trainDocList = await this.trainModel.find({}).sort({ createdAt: -1 }).limit(intPerPage).skip(intPerPage * (pageNo-1)).exec();
     const trainResList = await Promise.all(
       trainDocList.map(trainDoc => {
-        return this.getTrainInfoBy_id(username, trainDoc._id);
+        return this.getTrainInfoBy_id(trainDoc._id);
       })
     );
     return trainResList;
@@ -112,9 +112,9 @@ export class TrainService {
     return resTrainSetting;
   }
 
-  async deleteTrainInfoBy_id(username: string, _id: string) {
+  async deleteTrainInfoBy_id(_id: string) {
     console.log(`[train service] deleteTrainInfoBy_id`);
-    const trainStatus = await this.trainServerService.getTrainStatus(username, _id);
+    const trainStatus = await this.trainServerService.getTrainStatus(_id);
     if (trainStatus != 'done' && trainStatus != 'error') {
       console.log(`Training is on processing : only 'done' or 'error' train status could be deleted`);
       return null;

@@ -26,22 +26,22 @@ export class TrainServerService {
     return resTrain.data.result.id; // serverTrainId
   }
 
-  async getTrainStatus(username: string, _id: string): Promise<any> {
+  async getTrainStatus(_id: string): Promise<any> {
     console.log(`[train server service] getTrainStatus`);
-    const userDoc = await this.userService.findOne(username);
-    const serverDoc = await this.serverInfoService.findByServerIndex(userDoc.serverIndex);
+    // const userDoc = await this.userService.findOne(username);
     const trainDoc = await this.trainService.findTrainBy_id(_id);
+    const serverDoc = await this.serverInfoService.findByServerIndex(trainDoc.serverIndex);
     const resTrain = await this.httpService.get(
       `http://${serverDoc.uri}/trains/${trainDoc.serverTrainId}`
     ).toPromise();
     return resTrain.data.result.status;
   }
 
-  async getTrainMetric(username: string, _id: string): Promise<any> {
+  async getTrainMetric(_id: string): Promise<any> {
     console.log(`[train server service] getTrainMetric`);
-    const userDoc = await this.userService.findOne(username);
-    const serverDoc = await this.serverInfoService.findByServerIndex(userDoc.serverIndex);
+    // const userDoc = await this.userService.findOne(username);
     const trainDoc = await this.trainService.findTrainBy_id(_id);
+    const serverDoc = await this.serverInfoService.findByServerIndex(trainDoc.serverIndex);
     const resTrainMetric = await this.httpService.get(
       `http://${serverDoc.uri}/trains/${trainDoc.serverTrainId}/metrics/pages/0`
     ).toPromise();
