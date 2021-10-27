@@ -68,14 +68,24 @@ export class TrainServerService {
     }
   }
 
-  async getResource(username: string): Promise<any> {
+  async getResource(): Promise<any[]> {
     console.log(`[train server service] getResource`);
-    const userDoc = await this.userService.findOne(username);
-    const serverDoc = await this.serverInfoService.findByServerIndex(userDoc.serverIndex);
-    const resResource = await this.httpService.get(
-      `http://${serverDoc.uri}/resources`
-    ).toPromise();
-    return resResource.data.result;
+    const serverIndex = [0, 1, 2, 3];
+    const resources: any[] = await Promise.all(
+      serverIndex.map(async index => {
+        const serverDoc = await this.serverInfoService.findByServerIndex(index);
+        const resResource = await this.httpService.get(
+          `http://${serverDoc.uri}/resources`
+          ).toPromise();
+        return resResource.data.result;
+      })
+    );
+    return resources;
+    // const serverDoc = await this.serverInfoService.findByServerIndex(0);
+    // const resResource = await this.httpService.get(
+    //   `http://${serverDoc.uri}/resources`
+    // ).toPromise();
+    // return resResource.data.result;
   }
 
   buildReqTrainDto(postTrainDto: PostTrainDto): ReqTrainDto {

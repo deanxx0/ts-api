@@ -8,9 +8,9 @@ export class TrainServerController {
 
   @UseGuards(JwtAuthGuard)
   @Get('resource')
-  async getResource(@Request() req): Promise<any> {
+  async getResource(): Promise<any> {
     console.log(`[Req][train server controller] getResource`);
-    const resource = await this.trainServerService.getResource(req.user.username);
+    const resource = await this.trainServerService.getResource();
     return {
       success: resource != null ? true : false,
       result: resource,
