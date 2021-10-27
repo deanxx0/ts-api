@@ -143,6 +143,7 @@ export class TrainService {
   buildResTrainSettingDto(train, configuration, augmentation): ResTrainSettingDto {
     return {
       name: train.name,
+      serverIndex: train.serverIndex,
       batchSize: configuration.batchSize,
       pretrainData: configuration.pretrainData,
       width: configuration.width,

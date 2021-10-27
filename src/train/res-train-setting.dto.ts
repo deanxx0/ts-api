@@ -1,5 +1,6 @@
 export class ResTrainSettingDto {
   name: string;
+  serverIndex: number;
   batchSize: number;
   pretrainData: string;
   width: number;
